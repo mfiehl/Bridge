@@ -1,14 +1,15 @@
 package p1;
 
 /*
- * Project that simulates a game of bridge by shuffling a deck of cards, dealing them out, and displaying hands.
+ * Project that simulates a game of bridge by shuffling a deck of cards, dealing them out, sorting each hand,
+ * and finally displaying each hand.
  * CSC 164
  * Mike Fiehl
- * 26, Jan 2016
- * Version 2.0
+ * 2, Feb 2016
+ * Version 3.0
  */
 
-import java.util.Random;
+import java.util.Arrays;
 
 public class Main
 {
@@ -23,12 +24,35 @@ public class Main
         String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
         String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
+        // Initialize deck
+        initializeDeck(deck);
+
+        // Shuffle deck
+        shuffleDeck(deck);
+
+        // Deal cards to four players
+        dealCards(deck, north, east, south, west);
+
+        // Sort each player's hand
+        sortCards(north, east, south, west);
+
+        // Show each player's hand
+        showHands(suits, ranks, north, east, south, west);
+    }// end main(method)
+
+// ------------------------------ Methods ------------------------------
+
+    private static void initializeDeck(int[] deck)
+    {
         // Initialize the cards
         for (int i = 0; i < deck.length; i++)
         {
             deck[i] = i;
         }// end for
+    }// end initializeDeck method
 
+    private static void shuffleDeck(int[] deck)
+    {
         // Shuffle the deck 3 times
         for (int i = 0; i < 3; i++)
         {
@@ -40,13 +64,36 @@ public class Main
                 deck[j] = deck[index];
                 deck[index] = temp;
             }// end for inner
-
         }// end for outer
+    }// end shuffleDeck method
 
-        // Split the deck array into 4 different arrays which simulates each player being dealt 13 cards
-
-        // Deal and show North's hand
+    private static void dealCards(int[] deck, int[] north, int[] east, int[] south, int[] west)
+    {
+        // Deal North's hand
         System.arraycopy(deck, 0, north, 0, 13);
+
+        // Deal East's hand
+        System.arraycopy(deck, 13, east, 0, 13);
+
+        // Deal South's hand
+        System.arraycopy(deck, 26, south, 0, 13);
+
+        // Deal West's hand
+        System.arraycopy(deck, 39, west, 0, 13);
+    }// end dealCards method
+
+    private static void sortCards(int[] north, int[] east, int[] south, int[] west)
+    {
+        // Sort all player's hands
+        Arrays.sort(north);
+        Arrays.sort(east);
+        Arrays.sort(south);
+        Arrays.sort(west);
+    }// end sortCards method
+
+    private static void showHands(String[] suits, String[] ranks, int[] north, int[] east, int[] south, int[] west)
+    {
+        // Show North's hand
         System.out.printf("\n--------------------\nNorth's Hand:\n\n");
         for (int i = 0; i < north.length; i++)
         {
@@ -55,8 +102,7 @@ public class Main
             System.out.println(rank + " of " + suit);
         }// end for
 
-        // Deal and show East's hand
-        System.arraycopy(deck, 13, east, 0, 13);
+        // Show East's hand
         System.out.printf("\n--------------------\nEast's Hand:\n\n");
         for (int i = 0; i < east.length; i++)
         {
@@ -65,8 +111,7 @@ public class Main
             System.out.println(rank + " of " + suit);
         }// end for
 
-        // Deal and show South's hand
-        System.arraycopy(deck, 26, south, 0, 13);
+        // Show South's hand
         System.out.printf("\n--------------------\nSouth's Hand:\n\n");
         for (int i = 0; i < south.length; i++)
         {
@@ -75,8 +120,7 @@ public class Main
             System.out.println(rank + " of " + suit);
         } // end for
 
-        // Deal and show West's hand
-        System.arraycopy(deck, 39, west, 0, 13);
+        // Show West's hand
         System.out.printf("\n--------------------\nWest's Hand:\n\n");
         for (int i = 0; i < west.length; i++)
         {
@@ -84,6 +128,6 @@ public class Main
             String rank = ranks[west[i] % 13];
             System.out.println(rank + " of " + suit);
         }// end for
-    }
-}
+    }// end showHands method
+}// end main(class)
 
